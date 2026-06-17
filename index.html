@@ -11,21 +11,26 @@
         /* Header */
         header { background: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .logo { font-size: 24px; font-weight: bold; color: #0f6cbd; }
-        .support-link { color: #0f6cbd; text-decoration: none; font-weight: bold; border: 1px solid #0f6cbd; padding: 8px 20px; border-radius: 50px; }
+        .support-link { color: #0f6cbd; text-decoration: none; font-weight: bold; border: 1px solid #0f6cbd; padding: 8px 20px; border-radius: 50px; transition: 0.3s; }
+        .support-link:hover { background: #0f6cbd; color: white; }
         
         /* Hero */
         .hero { text-align: center; padding: 60px 20px; background: white; }
         .hero h1 { font-size: 2rem; color: #1a1a1a; margin-bottom: 20px; }
         .hero p { color: #666; margin-bottom: 30px; }
-        .btn-main { background: #00a86b; color: white; padding: 15px 50px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; font-family: inherit; }
+        .btn-main { background: #00a86b; color: white; padding: 15px 50px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; font-family: inherit; font-size: 1rem; }
 
         /* Feature Section */
         .features { padding: 50px 5%; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); }
+        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .card h3 { color: #0f6cbd; margin-top: 0; }
         
-        footer { text-align: center; padding: 40px; color: #888; font-size: 0.9rem; }
+        /* Modal Form */
+        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
+        .form-card { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; color: #333; text-align: right; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .close-btn { cursor: pointer; float: left; font-size: 24px; color: #888; }
+        #success-msg { display: none; text-align: center; padding: 20px; }
     </style>
 </head>
 <body>
@@ -38,32 +43,75 @@
 <div class="hero">
     <h1>بیمه، بدون نگرانی</h1>
     <p>انتخاب بهترین پوشش بیمه‌ای در سریع‌ترین زمان، با مشاوره‌ی تخصصی ما.</p>
-    <button class="btn-main" onclick="alert('به زودی فرم کامل باز می‌شود!')">استعلام رایگان بیمه</button>
+    <button class="btn-main" onclick="openForm()">استعلام رایگان بیمه</button>
 </div>
 
 <div class="features">
     <div class="card">
         <h3>چرا بیمه رو آنلاین بخرم؟</h3>
-        <p>خدمات آنلاین، سریع و امن هستند. با ما می‌تونی از بین شرکت‌های مختلف، بهترین و ارزان‌ترین بیمه رو انتخاب کنی.</p>
+        <p>خدمات آنلاین، سریع و امن هستند. با ما می‌تونی بهترین و ارزان‌ترین بیمه رو انتخاب کنی.</p>
     </div>
     <div class="card">
         <h3>خریدِ راحت و بی‌دغدغه</h3>
         <p>هدف ما حذف مراحلِ پیچیده‌ی اداری است. فقط نوع بیمه رو انتخاب کن و بقیه‌ی کارها با ما.</p>
     </div>
     <div class="card">
-        <h3>تحت نظارت بیمه مرکزی</h3>
-        <p>تمامی فعالیت‌های ما در بیمه‌یار تحت نظارت دقیق و طبق قوانین بیمه مرکزی جمهوری اسلامی ایران است.</p>
+        <h3>اگه اطلاعاتم رو اشتباه وارد کنم چی؟</h3>
+        <p>کارشناسان ما قبل از صدور، اطلاعات رو چک می‌کنند تا در صورت بروز خطا، اصلاحات لازم انجام بشه.</p>
     </div>
     <div class="card">
-        <h3>صدور سریع بیمه‌نامه</h3>
-        <p>بدون نیاز به بازدید حضوری (در بسیاری از موارد)، بیمه‌نامه‌ی شما در کوتاه‌ترین زمان صادر می‌شود.</p>
+        <h3>ممکنه تاریخ سررسید بیمه‌ام یادم بره؟</h3>
+        <p>طبیعیه! نگران نباش، ما زمان تمدید رو بهت یادآوری می‌کنیم تا دچار جریمه دیرکرد نشی.</p>
     </div>
 </div>
 
-<footer>
-    <p>تمامی حقوق این وب‌سایت متعلق به بیمه‌یار است.</p>
-    <p>کانال ما در بله: <a href="https://ble.ir/bimehyar_channel">@bimehyar_channel</a></p>
-</footer>
+<!-- Modal Form -->
+<div id="overlay">
+    <div class="form-card" id="form-container">
+        <span class="close-btn" onclick="closeForm()">×</span>
+        <h3>ثبت درخواست مشاوره</h3>
+        <input type="text" id="full_name" placeholder="نام و نام خانوادگی">
+        <input type="tel" id="phone" placeholder="شماره تماس">
+        <select id="insurance_type">
+            <option value="شخص ثالث">بیمه شخص ثالث</option>
+            <option value="بدنه">بیمه بدنه</option>
+            <option value="عمر">بیمه عمر و سرمایه‌گذاری</option>
+            <option value="آتش‌سوزی">بیمه آتش‌سوزی</option>
+            <option value="درمان">بیمه درمان تکمیلی</option>
+        </select>
+        <button class="btn-main" style="width: 100%; margin-top: 10px;" onclick="saveData()">ارسال درخواست</button>
+    </div>
+    <div class="form-card" id="success-msg">
+        <h2 style="color: #00a86b;">سپاسگزاریم! ✅</h2>
+        <p>درخواست شما با موفقیت ثبت شد.</p>
+        <button class="btn-main" onclick="closeForm()">بستن</button>
+    </div>
+</div>
+
+<script>
+    const SUPABASE_URL = 'https://cxqblragqizqzctilmzm.supabase.co/rest/v1/leads';
+    const API_KEY = 'sb_publishable_di9wz8dZKm-F9MXBT4Th0g_gu1_NX13';
+
+    function openForm() { document.getElementById('overlay').style.display = 'flex'; }
+    function closeForm() { document.getElementById('overlay').style.display = 'none'; document.getElementById('form-container').style.display = 'block'; document.getElementById('success-msg').style.display = 'none'; }
+
+    async function saveData() {
+        const name = document.getElementById('full_name').value;
+        const phone = document.getElementById('phone').value;
+        const type = document.getElementById('insurance_type').value;
+
+        if(!name || !phone) { alert('لطفاً فیلدها را پر کنید.'); return; }
+
+        try {
+            const response = await fetch(SUPABASE_URL, {
+                method: 'POST',
+                headers: { 'apikey': API_KEY, 'Authorization': `Bearer ${API_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+                body: JSON.stringify({ full_name: name, phone: phone, insurance_type: type })
+            });
+            if (response.ok) { document.getElementById('form-container').style.display = 'none'; document.getElementById('success-msg').style.display = 'block'; }
+        } catch (e) { alert('خطا در ارسال.'); }
+    }
+</script>
 
 </body>
 </html>
