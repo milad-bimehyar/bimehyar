@@ -82,38 +82,3 @@
             <option value="درمان">بیمه درمان تکمیلی</option>
         </select>
         <button class="btn-main" style="width: 100%; margin-top: 10px;" onclick="saveData()">ارسال درخواست</button>
-    </div>
-    <div class="form-card" id="success-msg">
-        <h2 style="color: #00a86b;">سپاسگزاریم! ✅</h2>
-        <p>درخواست شما با موفقیت ثبت شد.</p>
-        <button class="btn-main" onclick="closeForm()">بستن</button>
-    </div>
-</div>
-
-<script>
-    const SUPABASE_URL = 'https://cxqblragqizqzctilmzm.supabase.co/rest/v1/leads';
-    const API_KEY = 'sb_publishable_di9wz8dZKm-F9MXBT4Th0g_gu1_NX13';
-
-    function openForm() { document.getElementById('overlay').style.display = 'flex'; }
-    function closeForm() { document.getElementById('overlay').style.display = 'none'; document.getElementById('form-container').style.display = 'block'; document.getElementById('success-msg').style.display = 'none'; }
-
-    async function saveData() {
-        const name = document.getElementById('full_name').value;
-        const phone = document.getElementById('phone').value;
-        const type = document.getElementById('insurance_type').value;
-
-        if(!name || !phone) { alert('لطفاً فیلدها را پر کنید.'); return; }
-
-        try {
-            const response = await fetch(SUPABASE_URL, {
-                method: 'POST',
-                headers: { 'apikey': API_KEY, 'Authorization': `Bearer ${API_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-                body: JSON.stringify({ full_name: name, phone: phone, insurance_type: type })
-            });
-            if (response.ok) { document.getElementById('form-container').style.display = 'none'; document.getElementById('success-msg').style.display = 'block'; }
-        } catch (e) { alert('خطا در ارسال.'); }
-    }
-</script>
-
-</body>
-</html>
